@@ -1,9 +1,12 @@
-version: '3.7'
+version: '3.8'
 
 services:
  web:
   build: .
   command: python /code/manage.py runserver 0.0.0.0:8000
+  environment:
+    - SECRET_KEY=d__(mmwqqgv0(3k0_qxa97%=@wd2q(5fb#*2a(ef_1%yco28ub
+    - DEBUG=1
   volumes:
     - .:/code
   ports:

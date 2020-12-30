@@ -20,10 +20,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd__(mmwqqgv0(3k0_qxa97%=@wd2q(5fb#*2a(ef_1%yco28ub'
-
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', default=0)
 
 ALLOWED_HOSTS = []
 
@@ -39,8 +38,28 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig', 
+    'django.contrib.sites',
+     # Third-party
+    'crispy_forms',
+    'allauth',
+    'allauth.account',
+    
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4' 
+# django-allauth config
+SITE_ID = 1 
+AUTHENTICATION_BACKENDS = (
+'django.contrib.auth.backends.ModelBackend',
+'allauth.account.auth_backends.AuthenticationBackend',
+)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
+ACCOUNT_USERNAME_REQUIRED = False # new
+ACCOUNT_AUTHENTICATION_METHOD = 'email' # new
+ACCOUNT_EMAIL_REQUIRED = True # new
+ACCOUNT_UNIQUE_EMAIL = True # new
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -123,4 +142,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-AUTH_USER_MODEL = 'users.CustomUser' # new
+AUTH_USER_MODEL = 'users.CustomUser' 
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_FINDERS = [
+"django.contrib.staticfiles.finders.FileSystemFinder",
+"django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
